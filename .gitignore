@@ -1,0 +1,10 @@
+@"
+node_modules/
+.env
+uploads/
+*.log
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+"@ | Out-File -Encoding ascii .gitignore
