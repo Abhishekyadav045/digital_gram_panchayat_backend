@@ -7,6 +7,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const mailRoutes = require("./routes/mailRoutes");
+const fs = require("fs");
 
 
 
@@ -41,6 +42,9 @@ app.use(express.json());
 app.use("/api", mailRoutes);
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(express.static(__dirname)); // for uploads data in foldfer
+if (!fs.existsSync("uploads")) {
+    fs.mkdirSync("uploads");
+}
 app.use("/uploads", express.static("uploads"));
 
 
@@ -61,20 +65,20 @@ app.use("/api", require("./routes/contactRoutes"));
 
 
 /* ---------- START SERVER ---------- */
-const PORT = process.env.PORT;
-if (!PORT) {
-    throw new Error(' PORT is not defined in .env');
-}
+const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () =>
-    console.log(` Server running → http://localhost:${PORT}`)
-);
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+});
 
 
 
 /* ---------- ERROR HANDLERS ---------- */
-app.use((req, res, next) => {
-    setImmediate(() => next(new Error('Route not found')));
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        message: "Route not found"
+    });
 });
 
 app.use((err, req, res, next) => {

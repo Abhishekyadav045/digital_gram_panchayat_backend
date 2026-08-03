@@ -13,7 +13,9 @@ const jwtsecret = process.env.JWT_SECRET;
 =========================== */
 router.post("/sign-up", async (req, res) => {
     try {
-        // console.log(req.body);
+
+        console.log("Signup Data:", req.body);
+
 
         const { name, email, mobile, village, aadhar, password, role } = req.body;
 
